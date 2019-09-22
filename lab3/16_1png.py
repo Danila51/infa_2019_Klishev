@@ -2,8 +2,6 @@ from graph import *
 
 windowSize(900, 1400)
 canvasSize(792, 1200)
-
-
 # рисут эллипс
 def leps(a, b, x0, y0):
     x = a
