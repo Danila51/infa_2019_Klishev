@@ -1,97 +1,92 @@
 from graph import *
 
-
 windowSize(900, 1400)
 canvasSize(792, 1200)
 
 
-# рисуeт эллипс 
-#a-большая полуось,b-малая
+# рисуeт эллипс
+# a-большая полуось,b-малая
 def leps(a, b, x0, y0):
-	x = a
-	y = 0
-	p = [(x0 + a, y0)]
-	for i in range(2 * a):
-		x -= 1
-		y = ((1 - x ** 2 / (a ** 2)) * b ** 2) ** 0.5
-		p.append((x + x0, y + y0))
-	for i in range(2 * a):
-		x += 1
-		y = -(((1 - x ** 2 / (a ** 2)) * b ** 2) ** 0.5)
-		p.append((x + x0, y + y0))
-	polygon(p)
+    x = a
+    p = [(x0 + a, y0)]
+    for i in range(2 * a):
+        x -= 1
+    y = ((1 - x ** 2 / (a ** 2)) * b ** 2) ** 0.5
+    p.append((x + x0, y + y0))
+    for i in range(2 * a):
+        x += 1
+    y = -(((1 - x ** 2 / (a ** 2)) * b ** 2) ** 0.5)
+    p.append((x + x0, y + y0))
+    polygon(p)
 
 
-#функция рисует область перекрытия овала прямоуголником
-#f и g границы прямоугольника по оси y
+# функция рисует область перекрытия овала прямоуголником
+# f и g границы прямоугольника по оси y
 def leps2(a, b, x0, y0, f, g):
-	x = a
-	y = 0
-	p = []
-	for i in range(2 * a):
-		x -= 1
-		y = ((1 - x ** 2 / (a ** 2)) * b ** 2) ** 0.5
-		if (x + x0 <= f) and (x + x0 >= g):
-			p.append((x + x0, y + y0))
-	for i in range(2 * a):
-		x += 1
-		y = -(((1 - x ** 2 / (a ** 2)) * b ** 2) ** 0.5)
-		if (x + x0 <= f) and (x + x0 >= g):
-			p.append((x + x0, y + y0))
-	polygon(p)
-
+    x = a
+    p = []
+    for i in range(2 * a):
+        x -= 1
+    y = ((1 - x ** 2 / (a ** 2)) * b ** 2) ** 0.5
+    if (x + x0 <= f) and (x + x0 >= g):
+        p.append((x + x0, y + y0))
+    for i in range(2 * a):
+        x += 1
+    y = -(((1 - x ** 2 / (a ** 2)) * b ** 2) ** 0.5)
+    if (x + x0 <= f) and (x + x0 >= g):
+        p.append((x + x0, y + y0))
+    polygon(p)
 
 
 # зона облака и белого дома
 def leps3(a, b, x0, y0, f, g):
-	x = -a
-	y = 0
-	p = [(761, 22),(605, 22)]
-	for i in range(2 * a):
-		x += 1
-		y = (((1 - x ** 2 / (a ** 2)) * b ** 2) ** 0.5)
-		if (x + x0 <= f) and (x + x0 >= g):
-			p.append((x + x0, y + y0))
-	polygon(p)
+    x = -a
+    p = [(761, 22), (605, 22)]
+    for i in range(2 * a):
+        x += 1
+        y = (((1 - x ** 2 / (a ** 2)) * b ** 2) ** 0.5)
+        if (x + x0 <= f) and (x + x0 >= g):
+            p.append((x + x0, y + y0))
+    polygon(p)
 
 
-#рисует дом с размерами sхh
-def dom(x,y,s,h):
-	polygon([(x, y), (s+ x, y), (s + x, h + y), (x, h + y)])
+# рисует дом с размерами sхh
+def dom(x, y, s, h):
+    polygon([(x, y), (s + x, y), (s + x, h + y), (x, h + y)])
 
 
 def okno(a, b):
-	polygon([(60+a, b-20), (80+a, b-20), (80+a, b-10), (60+a, b-10)])
+    polygon([(60 + a, b - 20), (80 + a, b - 20), (80 + a, b - 10), (60 + a, b - 10)])
 
 
-#x большая полуось, y -малая
-#a начало машины по оси х, b по y
-def koleso(x,y,a,b):
-		penColor("#00222b")
-		brushColor("#00222b")
-		leps(x, y, a+60, b+35)
-		
-		
+# x большая полуось, y -малая
+# a начало машины по оси х, b по y
+def koleso(x, y, a, b):
+    penColor("#00222b")
+    brushColor("#00222b")
+    leps(x, y, a + 60, b + 35)
+
+
 # рисуем машину и колеса
-#a начало машины по оси х, b по y
-def car(a,b):
-	penColor("#00ccff")
-	brushColor("#00ccff")
-	polygon([(a, b), (a+273, b), (a+273, b+30), (a, b+30)])
-	polygon([(a+50, b), (a+150, b), (a+150, b-30), (a+50, b-30)])
-	
-	penColor("#d5f6ff")
-	brushColor("#d5f6ff")
-	
-	okno(a, b)
-	okno(50+a, b)
-	
-	penColor("#00222b")
-	brushColor("#00222b")
-	polygon([(a, b+25), (a, b+15), (a-30, b+15), (a-30, b+25)])
-	
-	koleso(25, 15, a+20, b+35)
-	koleso(25, 15, a+70, b+35)
+# a начало машины по оси х, b по y
+def car(a, b):
+    penColor("#00ccff")
+    brushColor("#00ccff")
+    polygon([(a, b), (a + 273, b), (a + 273, b + 30), (a, b + 30)])
+    polygon([(a + 50, b), (a + 150, b), (a + 150, b - 30), (a + 50, b - 30)])
+
+    penColor("#d5f6ff")
+    brushColor("#d5f6ff")
+
+    okno(a, b)
+    okno(50 + a, b)
+
+    penColor("#00222b")
+    brushColor("#00222b")
+    polygon([(a, b + 25), (a, b + 15), (a - 30, b + 15), (a - 30, b + 25)])
+
+    koleso(25, 15, a + 20, b + 35)
+    koleso(25, 15, a + 70, b + 35)
 
 
 # рисуем фон
@@ -116,30 +111,28 @@ leps(330, 90, 225, 141)
 leps(330, 90, 178, 573)
 leps(330, 90, 621, 40)
 
-
-#дома
+# дома
 penColor("#93a7ac")
 brushColor("#93a7ac")
-dom(0, 0,157,700)
+dom(0, 0, 157, 700)
 
 penColor("#93aca7")
 brushColor("#93aca7")
-dom(198, 40,157,700)
+dom(198, 40, 157, 700)
 
 penColor("#b7c8c4")
 brushColor("#b7c8c4")
-dom(105, 100,157,700)
+dom(105, 100, 157, 700)
 
 penColor("#dbe3e2")
 brushColor("#dbe3e2")
-dom(590, 0,157,700)
+dom(590, 0, 157, 700)
 
 penColor("#6f918a")
 brushColor("#6f918a")
-dom(505, 120,157,700)
+dom(505, 120, 157, 700)
 
-
-#облака над домом
+# облака над домом
 """penColor("#a8baba")
 brushColor("#a8baba")
 leps(330, 90, 570, 372)
@@ -167,12 +160,10 @@ penColor("#beccca")
 brushColor("#beccca")
 leps3(330, 90, 621, 40, 761,605)"""
 
-
-
-#дым
+# дым
 penColor("#6c8580")
 brushColor("#6c8580")
-leps(80,20,0,832)
-leps(80,20,130,900)
+leps(80, 20, 0, 832)
+leps(80, 20, 130, 900)
 
 run()
