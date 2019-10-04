@@ -1,4 +1,6 @@
-from graph import *
+from laba3.graph import changeCoords, brushColor, polygon, \
+    randColor, rectangle, changeFillColor, windowSize, \
+    canvasSize, onMouseClick, onTimer, run
 
 windowSize(900, 1400)
 canvasSize(792, 1200)
