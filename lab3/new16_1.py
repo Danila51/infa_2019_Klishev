@@ -1,4 +1,4 @@
-from laba3.graph import changeCoords, brushColor, polygon, \
+from lab3.graph import changeCoords, brushColor, polygon, \
     randColor, rectangle, changeFillColor, windowSize, \
     canvasSize, onMouseClick, onTimer, run
 
