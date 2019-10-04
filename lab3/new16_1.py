@@ -1,6 +1,6 @@
-from lab3.graph import changeCoords, brushColor, polygon, \
-    randColor, rectangle, changeFillColor, windowSize, \
-    canvasSize, onMouseClick, onTimer, run
+from lab3.graph import brushColor, polygon, \
+    randColor, changeFillColor, windowSize, \
+    canvasSize, onTimer, run, penColor, moveObjectBy, circle
 
 windowSize(900, 1400)
 canvasSize(792, 1200)
