@@ -1,5 +1,5 @@
 # DONE:
-# Заккоментировал кривоватое столкновение шаровsdf
+# Заккоментировал кривоватое столкновение шаровd
 
 from tkinter import *
 from random import randrange as rnd, choice
@@ -14,7 +14,7 @@ canv.pack(fill=BOTH, expand=1)
 
 colors = ['red', 'orange', 'yellow', 'green', 'blue', 'black', 'brown', 'pink']
 score = 0  # Переменная счета
-model = canv.create_text(50, 50, text=score, font="Verdana 14")  # Объект счета #what is this ?@#$#@$7&$#7
+model = canv.create_text(50, 50, text=score, font="Verdana 14")  # Объект счета
 
 
 def new_ball():  # Модуль создания шара
@@ -40,9 +40,7 @@ def move_ball(ball):  # Модуль движения
     ball['x'] += ball['dx']
     ball['y'] += ball['dy']
     canv.move(ball['model'], ball['dx'], ball['dy'])
-
-
-
+    
 
 def update():  # Изменение времени
     global b1, b2, b3
@@ -63,19 +61,6 @@ def update():  # Изменение времени
         b2['dx'] = rnd(-10, 10)
         b2['dy'] = rnd(-10, 10)
     """
-
-    if ( ( (b1['x'] - b2['x'])**2 + (b1['y']-b2['y'])**2 )**(1/2) <= b1['r'] + b2['r']):
-        b1['dx'] = -b1['dx']
-        b1['dy'] = -b1['dy']
-        b2['dx'] = -b2['dx']
-        b2['dy'] = -b2['dy']
-    if ( ( (b1['x'] - b3['x'])**2 + (b1['y']-b3['y'])**2 )**(1/2) <= b1['r'] + b3['r']):
-        b1['dx'] = -b1['dx']
-        b1['dy'] = -b1['dy']
-        b3['dx'] = -b3['dx']
-        b3['dy'] = -b3['dy']
-
-
     move_ball(b1)
     move_ball(b2)
     move_ball(b3)
@@ -110,11 +95,8 @@ def click(event):  # Модуль изменеия счета и пересоз�
 
 
 b1 = new_ball()
-canv.itemconfig(b1['model'], fill = "red") 
 b2 = new_ball()
-canv.itemconfig(b2['model'], fill = "black" ) 
 b3 = new_ball()
-canv.itemconfig(b3['model'], fill = "black") 
 update()
 canv.bind('<Button-1>', click)
 mainloop()
