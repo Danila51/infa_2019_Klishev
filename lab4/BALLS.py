@@ -1,13 +1,11 @@
-from tkinter import mainloop, BOTH, Canvas, Frame, Tk
+from tkinter import mainloop, BOTH, Canvas, Tk
 from random import randrange as rnd, choice
 import math
 
 root = Tk()
 root.geometry('1280x720')
-
 c = Canvas(root, bg='white')
 c.pack(fill=BOTH, expand=1)
-
 colors = ['black', 'pink']  # Color module
 
 
@@ -114,7 +112,6 @@ class Ball:  # Class ball, move, acceleration, reflection are included. POS-X an
             self.airres.y = -1 * k * (self.vel.y) * math.fabs(self.vel.y)
 
 
-
 def rfdelete(list):  # check function, needs to seek Racceleration cause it complicated, uses *zerorf and *check(!)
     for i in range(len(list)):
         for g in range(len(list)):
@@ -138,23 +135,23 @@ def reflector(list):  # add function, includes reflection() of the ALL balls in 
     for i in range(len(list)):
         list[i].reflection()
 
+
 def air(list, k):  # add function, includes airresistance() of the ALL balls in the list
     for i in range(len(list)):
         list[i].airresistance(k)
 
 
-def collider(list): #add function, includes collision() of the ALL ball-ball in the list
+def collider(list):  # add function, includes collision() of the ALL ball-ball in the list
     for i in range(len(list)):
         for g in range(len(list)):
             if i != g:
                 list[g].collision(list[i])
 
 
-
 ballpack = [Ball() for i in range(10)]
 
 
-def update():  #Time function
+def update():  # Time function
     reflector(ballpack)
     air(ballpack, 0.0003)
     collider(ballpack)
