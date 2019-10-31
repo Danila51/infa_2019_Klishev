@@ -1,5 +1,5 @@
 from random import randrange as rnd, choice
-from tkinter import *
+from tkinter import mainloop, BOTH, Canvas, Frame, Tk
 import math
 import time
 
@@ -50,11 +50,6 @@ class ball():
             return True
         else:
             return False
-
-
-"""
-Класс gun описывает пушку. 
-"""
 
 
 class gun():
@@ -135,7 +130,6 @@ def new_game(event=''):
     canv.bind('<Button-1>', g1.fire2_start)
     canv.bind('<ButtonRelease-1>', g1.fire2_end)
     canv.bind('<Motion>', g1.targetting)
-    z = 0.03
     t1.live = 1
     while t1.live or balls:
         for b in balls:
