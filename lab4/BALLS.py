@@ -1,7 +1,6 @@
-from tkinter import *
-from random import randrange as rnd, choice  # Needs to random
+from tkinter import mainloop, BOTH, Canvas, Frame, Tk
+from random import randrange as rnd, choice
 import math
-import time
 
 root = Tk()
 root.geometry('1280x720')
@@ -108,7 +107,7 @@ class Ball:  # Class ball, move, acceleration, reflection are included. POS-X an
             self.rf.x = 0
             self.rf.y = 0
 
-    def airresistance(self, k): # airresistance mosule, limits velocity
+    def airresistance(self, k):  # airresistance mosule, limits velocity
         if math.fabs(self.vel.x) > 5:
             self.airres.x = -1 * k * (self.vel.x) * math.fabs(self.vel.x)
         if math.fabs(self.vel.y) > 5:
@@ -125,21 +124,21 @@ def rfdelete(list):  # check function, needs to seek Racceleration cause it comp
         list[k].zerorf()
 
 
-def cleart(list): #add function, needs to clear t after collisions
+def cleart(list):  # add function, needs to clear t after collisions
     for i in range(len(list)):
         list[i].t = 0
 
 
-def mover(list):    #add fuction, includes move() of the ALL balls in the list
+def mover(list):  # add fuction, includes move() of the ALL balls in the list
     for i in range(len(list)):
         list[i].move()
 
 
-def reflector(list):    #add function, includes reflection() of the ALL balls in the list
+def reflector(list):  # add function, includes reflection() of the ALL balls in the list
     for i in range(len(list)):
         list[i].reflection()
 
-def air(list, k):  #add function, includes airresistance() of the ALL balls in the list
+def air(list, k):  # add function, includes airresistance() of the ALL balls in the list
     for i in range(len(list)):
         list[i].airresistance(k)
 
