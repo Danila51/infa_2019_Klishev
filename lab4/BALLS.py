@@ -9,7 +9,7 @@ c.pack(fill=BOTH, expand=1)
 colors = ['black', 'pink']  # Color module
 
 
-class Vector:  # Class vector, needed to make my fcking life easier
+class Vector:
     def __init__(self, x, y):
         self.x = x
         self.y = y
