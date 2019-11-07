@@ -39,7 +39,7 @@ class Ball():
                 self.vx = self.vx / 2
                 self.y = 949
         if self.a == 0:
-            if self.live == 60: # если прошло 40 live с рождения, то шар взрывается
+            if self.live == 60:  # если прошло 40 live с рождения, то шар взрывается
                 self.game.balls.pop(self.game.balls.index(self))
                 canv.delete(self.id)
                 self.boom()
@@ -69,7 +69,8 @@ class Ball():
             boomballs[i].vy = rnd(-10, 10)
             self.game.balls += [boomballs[i]]
 
-class gun():
+
+class Gun():
     def __init__(self, g):
         self.f2_power = 10
         self.f2_on = 0
@@ -110,7 +111,7 @@ class gun():
             canv.itemconfig(self.id, fill='black')
 
 
-class target():
+class Target():
     def __init__(self):
         self.points = 0
         self.id = canv.create_oval(0, 0, 0, 0)
@@ -146,19 +147,19 @@ class Game():
     def __init__(self):
         self.balls = []
         self.bullet = 0
-        self.t1 = target()
-        self.t2 = target()
-        self.t3 = target()
+        self.t1 = Target()
+        self.t2 = Target()
+        self.t3 = Target()
         self.targets = [self.t1, self.t2, self.t3]
-        self.g1 = gun(self)
+        self.g1 = Gun(self)
 
     def new_game(self, event=''):
         screen1 = canv.create_text(700, 200, text='', font='40')
         self.balls = []
         self.bullet = 0
-        self.t1 = target()
-        self.t2 = target()
-        self.t3 = target()
+        self.t1 = Target()
+        self.t2 = Target()
+        self.t3 = Target()
         self.targets = [self.t1, self.t2, self.t3]
         for t in self.targets:
             t.new_target()
