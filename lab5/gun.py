@@ -19,19 +19,31 @@ class Ball:
         self.vx = 0  # speed
         self.vy = 0  # speed
         self.color = choice(['blue', 'green', 'red', 'brown'])
-        self.type = type  # 1- ball, 2 - square
+        self.type = type  # 1- ball, 2 - square 3 Pentagon
         if self.type == 1:
             self.id = canv.create_oval(self.x - self.r, self.y - self.r, self.x + self.r, self.y + self.r,
                                        fill=self.color)
-        else:
+        elif self.type == 2:
             self.id = canv.create_rectangle(self.x - self.r, self.y - self.r, self.x + self.r, self.y + self.r,
                                             fill=self.color)
+        elif self.type == 3:
+            ang = 72 / 180 * math.pi
+            b = 2 * self.r * math.cos(54 / 180 * math.pi)  # side
+            b1 = b * math.cos(ang)
+            b2 = b * math.sin(ang)
+            b12 = b * math.cos(ang / 2)
+            b22 = b * math.sin(ang / 2)
+            ang = 54 / 180 * math.pi
+            x1 = b / 2
+            y1 = self.r * math.sin(ang)
+            points = [(self.x - x1, self.y - y1), (self.x - b1 - x1, self.y + b2 - y1),
+                      (self.x + b12 - x1 - b1, self.y + b2 + b22 - y1),
+                      (self.x + b + b1 - x1, self.y + b2 - y1), (self.x + b - x1, self.y - y1),
+                      (self.x - x1, self.y - y1)]
+            self.id = canv.create_polygon(points, fill=self.color, outline="black")
         self.live = 100  # time of live
         self.game = g
         self.a = a  # a=0 start ball, a=1 fragment
-
-    def set_coords(self):  # redraw
-        canv.coords(self.id, self.x - self.r, self.y - self.r, self.x + self.r, self.y + self.r)
 
     def move(self):  # function of the motion of bodies
         if self.y <= 950:
@@ -39,7 +51,7 @@ class Ball:
             self.y -= self.vy
             self.x += self.vx
             self.vx *= 0.99
-            self.set_coords()
+            canv.move(self.id, self.vx, -self.vy)
         else:
             if self.vx ** 2 + self.vy ** 2 > 10:
                 self.vy = -self.vy / 2
@@ -70,7 +82,7 @@ class Ball:
 
     def boom(self):  # boom
         n = rnd(4, 10)
-        boomballs = [Ball(self.game, self.x + rnd(5, 10), self.y + rnd(5, 10), 4, 1, rnd(1, 3)) for _ in range(n)]
+        boomballs = [Ball(self.game, self.x + rnd(5, 10), self.y + rnd(5, 10), 4, 1, rnd(1, 4)) for _ in range(n)]
         for i in range(n):
             boomballs[i].vx = rnd(-10, 10)
             boomballs[i].vy = rnd(-10, 10)
@@ -93,7 +105,7 @@ class Gun:
     def fire2_end(self, event):  # end of fire
         if self.game.h:
             self.game.bullet += 1
-            new_ball = Ball(self.game, 40, self.y, 9, 0, rnd(1, 3))
+            new_ball = Ball(self.game, 40, self.y, 9, 0, rnd(1, 4))
             self.move_gun()
             self.an = math.atan((event.y - new_ball.y) / (event.x - new_ball.x + 0.00001))
             new_ball.vx = self.f2_power * math.cos(self.an)
@@ -104,7 +116,7 @@ class Gun:
 
     def targetting(self, event=0):  # targetting
         if event:
-            self.an = math.atan((event.y - self.y) / (event.x - 20))
+            self.an = math.atan((event.y - self.y) / (event.x - 20 + 0.00001))
         if self.f2_on:
             canv.itemconfig(self.id, fill='orange')
         else:
@@ -127,55 +139,77 @@ class Gun:
 
 
 class Target:
-    def __init__(self):
+    def __init__(self, type):
         self.live = 1
         self.color = 'red'
         self.x = rnd(500, 1400)
         self.y = rnd(100, 800)
         self.r = rnd(20, 50)
-        self.vy = 5
-        self.points = 0
-        self.id = canv.create_oval(0, 0, 0, 0)
-        self.id_points = canv.create_text(30, 30, text=self.points, font='40')
+        self.vy = rnd(2, 7)
+        self.vx = rnd(2, 7)
+        self.type = type  # 1- ball, 2 - square, 3 - pentagon
+        if self.type == 1:
+            self.id = canv.create_oval(0, 0, 0, 0)
+        elif self.type == 2:
+            self.id = canv.create_rectangle(0, 0, 0, 0)
+        elif self.type == 3:
+            points = [(0, 0), (0, 0), (0, 0), (0, 0), (0, 0)]
+            self.id = canv.create_polygon(points, fill=self.color, outline="black")
 
     def new_target(self):
         x = self.x
         y = self.y
         color = self.color
         r = self.r
-        canv.coords(self.id, x - r, y - r, x + r, y + r)
-        canv.itemconfig(self.id, fill=color)
-
-    def set_coords(self):  # redraw
-        canv.coords(self.id, self.x - self.r, self.y - self.r, self.x + self.r, self.y + self.r)
+        if self.type == 1 or self.type == 2:
+            canv.coords(self.id, x - r, y - r, x + r, y + r)
+            canv.itemconfig(self.id, fill=color)
+        else:
+            ang = 72 / 180 * math.pi
+            b = 2 * r * math.cos(54 / 180 * math.pi)  # side
+            b1 = b * math.cos(ang)
+            b2 = b * math.sin(ang)
+            b12 = b * math.cos(ang / 2)
+            b22 = b * math.sin(ang / 2)
+            ang = 54 / 180 * math.pi
+            x1 = b / 2
+            y1 = r * math.sin(ang)
+            points = [(x - x1, y - y1), (x - b1 - x1, y + b2 - y1),
+                      (x + b12 - x1 - b1, y + b2 + b22 - y1),
+                      (x + b + b1 - x1, y + b2 - y1), (x + b - x1, y - y1),
+                      (x - x1, y - y1)]
+            self.id = canv.create_polygon(points, fill=color, outline="black")
 
     def move_target(self):  # function of the motion of targets
         self.y += self.vy
+        self.x += self.vx
         if (self.y <= 50 + self.r) or (self.y >= 950 - self.r):
             self.vy *= -1
-        if self.live == 0:
-            canv.delete(self.id)
-        self.set_coords()
-
-    def hit(self):
-        self.points += 1
-        # canv.itemconfig(self.id_points, text = self.points)  # меняет
+        if (self.x + self.r <= 400) or (self.x + self.r >= 1490):
+            self.vx *= -1
+        #if self.live == 0:
+            #canv.delete(self.id)
+        canv.move(self.id, self.vx, self.vy)
 
 
 class Game:
     def __init__(self):
         self.balls = []  # storage of balls
-        self.bullet = 0  # storage of bullets
-        self.number_of_targets = rnd(2, 10)
-        self.targets = [Target() for _ in range(self.number_of_targets)]  # storage of targets
+        self.bullet = 0  # number of shots
+        self.number_of_targets = rnd(3, 7)
+        self.targets = [Target(rnd(1, 4)) for _ in range(self.number_of_targets)]  # storage of targets
         self.g1 = Gun(self)  # пушка джокера
         self.h = 1  # if h=1 at least 1 target lives, if 0 - no one
+        self.points = 0
+        self.id_points = canv.create_text(30, 30, text=self.points, font='40')
 
     def new_game(self, event=''):
         screen1 = canv.create_text(700, 200, text='', font='40')
+        dic = ['Вы уничтожили цели (', ') за ', ' выстрел. Вы крутой', ' выстрела', ' выстрелов', 'Вы сделали ',
+               ' выстрел']
         self.balls = []
         self.bullet = 0
-        self.targets = [Target() for _ in range(self.number_of_targets)]
+        self.targets = [Target(rnd(1, 4)) for _ in range(self.number_of_targets)]
         for t in self.targets:  # draw targets
             t.new_target()
         canv.bind('<Button-1>', self.g1.fire2_start)
@@ -194,25 +228,29 @@ class Game:
                     for t in self.targets:
                         if b.hittest(t):
                             t.live = 0
-                            t.hit()
-                            if self.bullet == 1:
-                                canv.itemconfig(screen1, text='Вы сделали ' + str(self.bullet) + ' выстрел')
-                            elif (self.bullet % 10 >= 2) and (self.bullet % 10 <= 4):
-                                canv.itemconfig(screen1, text='Вы сделали ' + str(self.bullet) + ' выстрела')
-                            else:
-                                canv.itemconfig(screen1, text='Вы сделали ' + str(self.bullet) + ' выстрелов')
+                            canv.delete(t.id)
+                            self.hit()
+                if self.bullet == 1:  # text during the game
+                    canv.itemconfig(screen1, text=dic[5] + str(self.bullet) + dic[6])
+                elif (self.bullet % 10 >= 2) and (self.bullet % 10 <= 4):
+                    canv.itemconfig(screen1, text=dic[5] + str(self.bullet) + dic[3])
+                else:
+                    canv.itemconfig(screen1, text=dic[5] + str(self.bullet) + dic[4])
                 canv.update()
-                time.sleep(0.009)
+                time.sleep(0.0096)
                 self.g1.move_gun()
                 self.g1.targetting()
                 self.g1.power_up()
-            else:
+            else:  # text after game
                 if self.bullet == 1:
-                    canv.itemconfig(screen1, text='Вы уничтожили цели за ' + str(self.bullet) + ' выстрел. Вы крутой')
+                    canv.itemconfig(screen1,
+                                    text=dic[0] + str(self.number_of_targets) + dic[1] + str(self.bullet) + dic[2])
                 elif (self.bullet % 10 >= 2) and (self.bullet % 10 <= 4):
-                    canv.itemconfig(screen1, text='Вы уничтожили цели за ' + str(self.bullet) + ' выстрела')
+                    canv.itemconfig(screen1,
+                                    text=dic[0] + str(self.number_of_targets) + dic[1] + str(self.bullet) + dic[3])
                 else:
-                    canv.itemconfig(screen1, text='Вы уничтожили цели за ' + str(self.bullet) + ' выстрелов')
+                    canv.itemconfig(screen1,
+                                    text=dic[0] + str(self.number_of_targets) + dic[1] + str(self.bullet) + dic[4])
                 canv.update()
                 time.sleep(2)
                 break
@@ -227,6 +265,10 @@ class Game:
                 else:
                     self.h = 1
                     break
+
+    def hit(self):
+        self.points += 1
+        canv.itemconfig(self.id_points, text=self.points)
 
 
 game1 = Game()

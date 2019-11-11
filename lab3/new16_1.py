@@ -1,3 +1,4 @@
+# coding=utf-8
 from lab3.graph import brushColor, polygon, \
     randColor, changeFillColor, windowSize, \
     canvasSize, onTimer, run, penColor, moveObjectBy, circle
