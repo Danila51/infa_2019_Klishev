@@ -96,7 +96,7 @@ class Gun:
         self.an = 1  # angle
         self.y = 899  # starting coord of gun
         self.vy = 8  # starting speed of gun
-        self.id = canv.create_line(20, self.y, 50, self.y - 30, width=7)
+        self.id = canv.create_line(20, self.y, 50, self.y - 30, fill='black', width=7)
         self.game = g
 
     def fire2_start(self, event):  # start of fire
@@ -114,9 +114,10 @@ class Gun:
             self.f2_on = 0
             self.f2_power = 10
 
-    def targetting(self, event=0):  # targetting
-        if event:
-            self.an = math.atan((event.y - self.y) / (event.x - 20 + 0.00001))
+    def targetting(self):  # targetting
+        x = root.winfo_pointerx() - root.winfo_rootx()  # this thing constantly turns gun
+        y = root.winfo_pointery() - root.winfo_rooty()
+        self.an = math.atan((y - self.y) / (x - 20 + 0.00001))
         if self.f2_on:
             canv.itemconfig(self.id, fill='orange')
         else:
@@ -187,8 +188,6 @@ class Target:
             self.vy *= -1
         if (self.x + self.r <= 400) or (self.x + self.r >= 1490):
             self.vx *= -1
-        #if self.live == 0:
-            #canv.delete(self.id)
         canv.move(self.id, self.vx, self.vy)
 
 
@@ -214,7 +213,6 @@ class Game:
             t.new_target()
         canv.bind('<Button-1>', self.g1.fire2_start)
         canv.bind('<ButtonRelease-1>', self.g1.fire2_end)
-        canv.bind('<Motion>', self.g1.targetting)
         while True:
             self.targets_lives = [self.targets[i].live for i in
                                   range(self.number_of_targets)]  # storage of target's lives
