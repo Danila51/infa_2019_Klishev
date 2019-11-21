@@ -255,7 +255,7 @@ class Game:
         canv.itemconfig(screen1, text='')
         root.after(500, self.new_game)
 
-    def live_checker(self):  # it check lives of targets
+    def live_checker(self):  # it checks lives of targets
         if self.targets_lives[0] == 0:
             for i in range(1, self.number_of_targets):
                 if self.targets_lives[i] == self.targets_lives[i - 1]:
